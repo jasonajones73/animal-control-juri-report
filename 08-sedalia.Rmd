@@ -16,32 +16,32 @@ theme_set(theme_minimal() +
                   panel.background = element_blank()))
 ```
 
-# Greensboro {#greensboro}
+# Sedalia {#sedalia}
 
-## Monthly call volume {#greensborovolume}
+## Monthly call volume {#sedaliavolume}
 
 How many calls do we receive each month?
 
 ```{r}
 call_data %>%
-  filter(jurisdiction == "Greensboro") %>%
+  filter(jurisdiction == "Sedalia") %>%
   filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
   group_by(common_calltime) %>%
   summarise(total = n()) %>%
   ungroup() %>%
   ggplot(aes(common_calltime, total)) +
   geom_col(fill = "#1d4c94") +
-  geom_text(aes(label = scales::comma(total)), color = "white", nudge_y = -30) +
+  geom_text(aes(label = scales::comma(total)), color = "white", nudge_y = -.5) +
   scale_y_continuous(labels = scales::comma_format())
 ```
 
-## Nature Breakdown {#greensboronatures}
+## Nature Breakdown {#sedalianatures}
 
 What are the top 10 nature codes assigned to calls.
 
 ```{r}
 call_data %>%
-  filter(jurisdiction == "Greensboro") %>%
+  filter(jurisdiction == "Sedalia") %>%
   filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
   filter(nature != "Transport To Animal Shelter") %>%
   group_by(nature) %>%
@@ -51,31 +51,29 @@ call_data %>%
   top_n(10, total) %>%
   ggplot(aes(reorder(nature, total), total)) +
   geom_col(fill = "#1d4c94") +
-  geom_text(aes(label = scales::comma(total)), color = "white", nudge_y = -80) +
+  geom_text(aes(label = scales::comma(total)), color = "white", nudge_y = -.5) +
   scale_y_continuous(labels = scales::comma_format()) +
   coord_flip() +
   theme(axis.text.y = element_text(size = 10))
 ```
 
-# Location Overview {#greensborolocation}
+# Location Overview {#sedalialocation}
 
 This is a map showing the call counts for hexagonal bins. The darker the color, the more calls we received in that area.
 
 ```{r}
 for_map <- call_dat_sf %>%
-  filter(jurisdiction == "Greensboro") %>%
+  filter(jurisdiction == "Sedalia") %>%
   filter(nature != "Transport To Animal Shelter") %>%
   filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month")))
 
 call_dat_sf %>%
-  filter(jurisdiction == "Greensboro") %>%
+  filter(jurisdiction == "Sedalia") %>%
   filter(nature != "Transport To Animal Shelter") %>%
   filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
   ggplot() +
-  geom_sf(data = filter(guil_places, NAME == "Greensboro"), color = "grey", fill = NA) +
-  geom_text(data = filter(places_labels, NAME == "Greensboro"), aes(long, lat, label = NAME), color = "black", size = 3) +
+  geom_sf(data = filter(guil_places, NAME == "Sedalia"), color = "grey", fill = NA) +
+  geom_text(data = filter(places_labels, NAME == "Sedalia"), aes(long, lat, label = NAME), color = "black", size = 3) +
   geom_hex(data = data.frame(st_coordinates(for_map)), aes(X, Y), alpha = 0.4, show.legend = FALSE) +
   scale_fill_viridis_c(option = "magma", direction = -1)
 ```
-
-

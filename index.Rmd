@@ -16,6 +16,15 @@ description: "A report detailing Animal Control calls for service broken down by
 
 Insert report introduction here!
 
+-Greensboro
+-Jamestown
+-Oak Ridge
+-Pleasant Garden
+-Sedalia
+-Stokesdale
+-Summerfield
+-Whitsett
+
 # Purpose {-#purpose}
 
 Insert an explanation of the purpose of this report!
@@ -32,12 +41,4 @@ Insert explanation of process to ask a question!
 
 Insert data source documentation here!
 
-
-Greensboro
-Jamestown
-Oak Ridge
-Pleasant Garden
-Sedalia
-Stokesdale
-Summerfield
-Whitsett
+Geographic boundaries from Census Tiger

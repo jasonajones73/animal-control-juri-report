@@ -36,7 +36,7 @@ call_data %>%
 
 ## Nature Breakdown {#naturebreakdown}
 
-What are the top 10 nature codes assigned to calls 
+What are the top 10 nature codes assigned to calls.
 
 ```{r}
 call_data %>%
@@ -55,42 +55,23 @@ call_data %>%
   theme(axis.text.y = element_text(size = 10))
 ```
 
-# Location Breakdown {#locationbreakdown}
+# Location Overview {#locationoverview}
+
+This is a map showing the call counts for hexagonal bins. The darker the color, the more calls we received in that area.
 
 ```{r}
 for_map <- call_dat_sf %>%
-  filter(nature != "Transport To Animal Shelter")
+  filter(nature != "Transport To Animal Shelter") %>%
+  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month")))
 
 call_dat_sf %>%
   filter(nature != "Transport To Animal Shelter") %>%
   filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
   ggplot() +
-  stat_density_2d(data = data.frame(st_coordinates(for_map)), aes(X, Y, fill = ..level..), alpha = 0.6, geom = "polygon") +
-  geom_sf(alpha = 0.2, color = "#1d4c94") +
   geom_sf(data = guil_bound, color = "black", fill = NA) +
-  scale_fill_viridis_c(option = "magma", direction = -1) +
-  theme(panel.grid.major = element_blank(),
-        axis.text = element_blank())
+  geom_sf(data = guil_places, color = "grey", fill = NA) +
+  geom_text(data = places_labels, aes(long, lat, label = NAME), color = "black", size = 2) +
+  geom_hex(data = data.frame(st_coordinates(for_map)), aes(X, Y), alpha = 0.4, show.legend = FALSE) +
+  scale_fill_viridis_c(option = "magma", direction = -1)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

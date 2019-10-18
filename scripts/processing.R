@@ -5,11 +5,10 @@
 
 # Load necessary packages
 library(tidyverse)
-library(lubridate) 
+library(lubridate)
 library(sf)
 library(extrafont)
-library(tigris)
-library(ggmap)
+#library(tigris) # Necessary for initially creating spatial objects
 
 # Data read
 ## Step 1: read csv file
@@ -34,14 +33,40 @@ call_dat_sf <- call_data %>%
   st_as_sf(coords = c("long", "lat"), crs = 4326)
 
 # Create Guilford County boundary object
-guil_bound <- counties(state = 37, year = 2017) %>%
-  st_as_sf() %>%
-  st_transform(crs = 4326) %>%
-  filter(NAME == "Guilford")
+# guil_bound <- counties(state = 37, year = 2017) %>%
+#   st_as_sf() %>%
+#   st_transform(crs = 4326) %>%
+#   filter(NAME == "Guilford")
+#write_rds(guil_bound, "data/guil_bound.rds")
+
+guil_bound <- read_rds("data/guil_bound.rds")
 
 # Create a places object and filter for Guilford County intersection
-guil_places <- places(state = 37, year = 2017) %>%
-  st_as_sf() %>%
-  st_transform(crs = 4326) %>%
-  st_intersection(guil_bound)
+# guil_places <- places(state = 37, year = 2017) %>%
+#   st_as_sf() %>%
+#   st_transform(crs = 4326)
+# 
+# make_filt <- guil_places %>%
+#   st_intersection(guil_bound) %>%
+#   pull(NAME)
+# 
+# guil_places <- guil_places %>%
+#   filter(NAME %in% make_filt)
+# 
+# write_rds(guil_places, "data/guil_places.rds")
 
+guil_places <- read_rds("data/guil_places.rds")
+
+# Make an object for adding labels to maps
+# places_labels <- guil_places %>%
+#   st_centroid() %>%
+#   st_coordinates() %>%
+#   data.frame() %>%
+#   mutate(NAME = guil_places$NAME) %>%
+#   rename(long = X, lat = Y)
+# 
+# write_rds(places_labels, "data/places_labels.rds")
+
+places_labels <- read_rds("data/places_labels.rds")
+
+  

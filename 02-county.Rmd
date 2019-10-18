@@ -1,3 +1,81 @@
-# Literature
 
-Here is a review of existing methods.
+```{r include=FALSE, warning=FALSE, message=FALSE}
+# Stop the R code from displaying, stop warnings and messages from displaying
+# Set the resolution and size of plots
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, dpi = 320, out.width = "100%")
+
+# Source Animal Services data
+# Note that this also loads packages
+source("scripts/processing.R")
+
+# Set base theme for plots
+theme_set(theme_minimal() +
+            theme(text = element_text(family = "Segoe UI"),
+                  axis.title = element_blank(),
+                  panel.grid.major = element_line(color = "black", linetype = "dotted"),
+                  panel.background = element_blank()))
+```
+
+# Guilford County {#county}
+
+## Monthly call volume {#countyvolume}
+
+How many calls do we receive each month?
+
+```{r}
+call_data %>%
+  filter(jurisdiction == "Guilford County") %>%
+  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
+  group_by(common_calltime) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  ggplot(aes(common_calltime, total)) +
+  geom_col(fill = "#1d4c94") +
+  geom_text(aes(label = scales::comma(total)), color = "white", nudge_y = -20) +
+  scale_y_continuous(labels = scales::comma_format())
+```
+
+## Nature Breakdown {#countynatures}
+
+What are the top 10 nature codes assigned to calls.
+
+```{r}
+call_data %>%
+  filter(jurisdiction == "Guilford County") %>%
+  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
+  filter(nature != "Transport To Animal Shelter") %>%
+  group_by(nature) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  arrange(desc(total)) %>%
+  top_n(10, total) %>%
+  ggplot(aes(reorder(nature, total), total)) +
+  geom_col(fill = "#1d4c94") +
+  geom_text(aes(label = scales::comma(total)), color = "white", nudge_y = -30) +
+  scale_y_continuous(labels = scales::comma_format()) +
+  coord_flip() +
+  theme(axis.text.y = element_text(size = 10))
+```
+
+# Location Overview {#countylocation}
+
+This is a map showing the call counts for hexagonal bins. The darker the color, the more calls we received in that area.
+
+```{r}
+for_map <- call_dat_sf %>%
+  filter(jurisdiction == "Guilford County") %>%
+  filter(nature != "Transport To Animal Shelter") %>%
+  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month")))
+
+call_dat_sf %>%
+  filter(jurisdiction == "Guilford County") %>%
+  filter(nature != "Transport To Animal Shelter") %>%
+  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
+  ggplot() +
+  geom_sf(data = guil_bound, color = "black", fill = NA) +
+  geom_sf(data = guil_places, color = "grey", fill = NA) +
+  geom_text(data = places_labels, aes(long, lat, label = NAME), color = "black", size = 2) +
+  geom_hex(data = data.frame(st_coordinates(for_map)), aes(X, Y), alpha = 0.4, show.legend = FALSE) +
+  scale_fill_viridis_c(option = "magma", direction = -1)
+```
+

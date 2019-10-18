@@ -65,7 +65,9 @@ This is a map showing the call counts for hexagonal bins. The darker the color, 
 for_map <- call_dat_sf %>%
   filter(jurisdiction == "Whitsett") %>%
   filter(nature != "Transport To Animal Shelter") %>%
-  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month")))
+  filter(common_calltime >= (floor_date(Sys.Date() - 365, unit = "1 month"))) %>%
+  st_coordinates() %>%
+  as_tibble()
 
 call_dat_sf %>%
   filter(jurisdiction == "Whitsett") %>%
@@ -74,6 +76,6 @@ call_dat_sf %>%
   ggplot() +
   geom_sf(data = filter(guil_places, NAME == "Whitsett"), color = "grey", fill = NA) +
   geom_text(data = filter(places_labels, NAME == "Whitsett"), aes(long, lat, label = NAME), color = "black", size = 3) +
-  geom_hex(data = data.frame(st_coordinates(for_map)), aes(X, Y), alpha = 0.4, show.legend = FALSE) +
+  geom_hex(data = for_map, aes(X, Y), alpha = 0.4, show.legend = FALSE) +
   scale_fill_viridis_c(option = "magma", direction = -1)
 ```

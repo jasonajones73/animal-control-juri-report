@@ -1,0 +1,43 @@
+--- 
+title: "Animal Services Jurisdictional Breakdown"
+subtitle: "A report detailing Animal Control calls for service broken down by jurisdiction."
+author: "Guilford County Budget Management & Evaluation"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "A report detailing Animal Control calls for service broken down by jurisdiction"
+---
+
+
+# Introduction {-#introduction}
+
+Insert report introduction here!
+
+# Purpose {-#purpose}
+
+Insert an explanation of the purpose of this report!
+
+# Term Definitions {-#termdefs}
+
+Insert important term definitions here!
+
+# Questions {-#questions}
+
+Insert explanation of process to ask a question!
+
+# Data Source {-#datasource}
+
+Insert data source documentation here!
+
+
+Greensboro
+Jamestown
+Oak Ridge
+Pleasant Garden
+Sedalia
+Stokesdale
+Summerfield
+Whitsett

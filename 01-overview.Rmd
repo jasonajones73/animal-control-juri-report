@@ -55,7 +55,7 @@ call_data %>%
   theme(axis.text.y = element_text(size = 10))
 ```
 
-# Location Overview {#locationoverview}
+## Location Overview {#locationoverview}
 
 This is a map showing the call counts for hexagonal bins. The darker the color, the more calls we received in that area.
 

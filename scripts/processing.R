@@ -20,6 +20,7 @@ library(extrafont)
 
 call_data <- read_csv(here::here("data/callsWithJurisdictions.csv")) %>%
   filter(agency == "ACO") %>%
+  filter(cancelled==FALSE) %>%
   mutate(jurisdiction = case_when(is.na(jurisdiction) == TRUE ~ "Guilford County",
                                   is.na(jurisdiction) != TRUE ~ jurisdiction)) %>%
   mutate(common_calltime = floor_date(calltime, unit = "1 month")) %>%

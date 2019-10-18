@@ -16,14 +16,14 @@ description: "A report detailing Animal Control calls for service broken down by
 
 Insert report introduction here!
 
--Greensboro
--Jamestown
--Oak Ridge
--Pleasant Garden
--Sedalia
--Stokesdale
--Summerfield
--Whitsett
+- Greensboro
+- Jamestown
+- Oak Ridge
+- Pleasant Garden
+- Sedalia
+- Stokesdale
+- Summerfield
+- Whitsett
 
 # Purpose {-#purpose}
 

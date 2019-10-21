@@ -10,6 +10,10 @@ library(sf)
 library(extrafont)
 #library(tigris) # Necessary for initially creating spatial objects
 
+# Create object containing only the billing jurisdictions as primary
+prim_juris <- c("Greensboro", "Jamestown", "Oak Ridge", "Pleasant Garden",
+                "Sedalia", "Stokesdale", "Summerfield", "Whitsett")
+
 # Data read
 ## Step 1: read csv file
 ## Step 2: filter for only ACO calls
@@ -17,6 +21,7 @@ library(extrafont)
 ## Step 4: create a common calltime for grouping
 ## Step 5: Get rid of leading "Z" character in nature codes
 ## Step 6: Get rid of all capital letters in nature codes
+## Step 7: Keep only billing jurisdictions listed, everything else county
 
 call_data <- read_csv(here::here("data/callsWithJurisdictions.csv")) %>%
   filter(agency == "ACO") %>%
@@ -25,7 +30,9 @@ call_data <- read_csv(here::here("data/callsWithJurisdictions.csv")) %>%
                                   is.na(jurisdiction) != TRUE ~ jurisdiction)) %>%
   mutate(common_calltime = floor_date(calltime, unit = "1 month")) %>%
   mutate(nature = str_replace(nature, "Z", "")) %>%
-  mutate(nature = str_to_title(nature))
+  mutate(nature = str_to_title(nature)) %>%
+  mutate(jurisdiction = case_when(jurisdiction %in% prim_juris ~ jurisdiction,
+                                  !(jurisdiction %in% prim_juris) ~ "Guilford County"))
 
 
 # Create simple feature object

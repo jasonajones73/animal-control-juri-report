@@ -8,7 +8,7 @@ bookdown::gitbook:
       before: |
         <li><a href="./">Guilford County Animal Services</a></li>
       after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+        <li><a href="https://www.guilfordcountync.gov/our-county/animal-services" target="blank">Guilford County Animal Services</a></li>
     download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:

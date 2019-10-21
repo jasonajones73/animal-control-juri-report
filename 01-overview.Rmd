@@ -73,7 +73,7 @@ call_dat_sf %>%
   geom_sf(data = guil_bound, color = "black", fill = NA) +
   geom_sf(data = guil_places, color = "grey", fill = NA) +
   geom_text(data = places_labels, aes(long, lat, label = NAME), color = "black", size = 2) +
-  geom_hex(data = for_map, aes(X, Y), alpha = 0.4, show.legend = FALSE) +
+  geom_hex(data = for_map, aes(X, Y), alpha = 0.6, show.legend = FALSE) +
   scale_fill_viridis_c(option = "magma", direction = -1)
 ```
 
